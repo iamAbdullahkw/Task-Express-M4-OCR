@@ -1,7 +1,13 @@
+const Ocr = require("../../models/Ocr");
+
 exports.ocrCreate = async (req, res, next) => {
   try {
-    res.status(201).json('text');
+    if (req.file) {
+      req.body.image = `${req.file.path}`;
+    }
+    const newOcr = await Ocr.create(req.body);
+    res.status(201).json(newOcr);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
